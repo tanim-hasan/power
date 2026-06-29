@@ -1,0 +1,81 @@
+system-view
+
+vlan batch 10 20
+
+interface GigabitEthernet0/0/1
+port link-type access
+port default vlan 10
+quit
+
+interface GigabitEthernet0/0/3
+port link-type access
+port default vlan 10
+quit
+
+interface GigabitEthernet0/0/2
+port link-type access
+port default vlan 20
+quit
+
+interface GigabitEthernet0/0/4
+port link-type access
+port default vlan 20
+quit
+
+interface GigabitEthernet0/0/5
+port link-type trunk
+port trunk allow-pass vlan 10 20
+quit
+
+save
+
+
+system-view
+sysname AR1
+
+interface GigabitEthernet0/0/0.10
+dot1q termination vid 10
+ip address 192.168.10.1 29
+arp broadcast enable
+quit
+
+interface GigabitEthernet0/0/0.20
+dot1q termination vid 20
+ip address 192.170.10.1 29
+arp broadcast enable
+quit
+
+interface GigabitEthernet0/0/1
+ip address 10.10.10.1 30
+undo shutdown
+quit
+
+ospf 1
+area 0
+network 192.168.10.0 0.0.0.7
+network 192.170.10.0 0.0.0.7
+network 10.10.10.0 0.0.0.3
+
+save
+
+
+system-view
+sysname R1
+
+interface GigabitEthernet0/0/0
+ip address 10.10.10.2 30
+undo shutdown
+quit
+
+interface GigabitEthernet0/0/1
+ip address 192.172.10.1 28
+undo shutdown
+quit
+
+ospf 1
+area 0
+network 10.10.10.0 0.0.0.3
+network 192.172.10.0 0.0.0.15
+
+save
+
