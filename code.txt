@@ -113,3 +113,45 @@ ospf 1
   network 192.172.10.8 0.0.0.3
 
 save
+
+system-view
+
+vlan batch 10 20
+
+interface GigabitEthernet0/0/1
+port link-type access
+port default vlan 10
+quit
+
+interface GigabitEthernet0/0/2
+port link-type access
+port default vlan 20
+quit
+
+interface GigabitEthernet0/0/3
+port link-type trunk
+port trunk allow-pass vlan 10 20
+quit
+
+save
+
+system-view
+sysname AR1
+
+interface GigabitEthernet0/0/0
+undo shutdown
+quit
+
+interface GigabitEthernet0/0/0.10
+dot1q termination vid 10
+ip address 192.168.10.1 24
+arp broadcast enable
+quit
+
+interface GigabitEthernet0/0/0.20
+dot1q termination vid 20
+ip address 192.168.20.1 24
+arp broadcast enable
+quit
+
+save
